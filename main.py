@@ -26,6 +26,9 @@ while True:
     success, img = cap.read()
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     imgBlur = cv2.GaussianBlur(imgGray, (3, 3), 1)
+    imgThreshold = cv2.adaptiveThreshold(imgBlur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 25, 16)
+    imgMedian = cv2.medianBlur(imgThreshold, 5)
+    imgDilate = cv2.dilate(imgMedian, np.ones((3, 3), np.uint8), iterations=1)
 
 
     checkParkingSpace()
@@ -35,4 +38,5 @@ while True:
 
     cv2.imshow("image", img)
     cv2.imshow("imageBlur", imgBlur)
+    cv2.imshow("imageThres", imgMedian)
     key = cv2.waitKey(10)
