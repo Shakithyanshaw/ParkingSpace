@@ -10,6 +10,8 @@ with open('CarParkPos', 'rb') as f:
     posList = pickle.load(f)   
 width, height = 107, 48
 
+
+# Function to check and display the availability of parking spaces
 def checkParkingSpace(imgPro):
 
     spaceCounter = 0
@@ -29,12 +31,15 @@ def checkParkingSpace(imgPro):
         else:
             color = (0, 0, 255)    
             thickness = 2
+
+        # Draw rectangle for each parking space    
         cv2.rectangle(img, pos, (pos[0]+width,pos[1]+height), color, thickness)     
 
 
         cvzone.putTextRect(img, f'Free:- {spaceCounter}/{len(posList)}', (100, 50), scale=3, thickness=5, offset=20, colorR=(0,200,0))
 
 
+# Infinite loop to process each frame of the video
 
 while True:
 
@@ -42,6 +47,8 @@ while True:
         cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
     success, img = cap.read()
+
+     # Preprocessing steps for image enhancement and object detection
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     imgBlur = cv2.GaussianBlur(imgGray, (3, 3), 1)
     imgThreshold = cv2.adaptiveThreshold(imgBlur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 25, 16)
